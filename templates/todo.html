@@ -27,8 +27,8 @@
 {% endfor %}
 </body>
 <script>
-        $(".del_todo").click(function (e) {
-            e.preventDefault();
+        $(".del_todo").click(function (event) {
+            event.preventDefault();
             var val = confirm('Вы уверены');
             if (val == true) {
                 var id = $(this).attr('id');
@@ -42,10 +42,8 @@
                     success: function (response) {
 
                             $('.del_todos').attr('id').remove();
-                        
                     }
                 });
-                return false;
             }
         });
 </script>

@@ -1,4 +1,23 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {% csrf_token %}
 <label for="id_title">Задача:</label>
 <input id="id_title" maxlength="256" name="title" type="text">
-<input type="submit" name="" value="Добавить">
+<input type="submit" name="" value="Добавить" class="send_form" token="{{ csrf_token }}">
+
+<script>
+        $(".send_form").click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/form/",
+                data: {
+                    'csrfmiddlewaretoken': $('.send_form').attr('token'),
+                    title: $('#id_title').val()
+                },
+                success: function(response)
+                {
+                    console.log(data);
+                }
+            });
+        });
+</script>
