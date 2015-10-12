@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<style>
+    form {
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+    }
+</style>
+<body>
+<h1>Лист задачь на день</h1>
+
+<form method="POST" action="{% url 'todo_form' %}">
+    {% include 'form.html' with form=form %}
+</form>
+{% for todo in todos %}
+    <div class="del_todos" id="{{ todo.id }}">
+    <h4>{{ todo.title }}</h4>
+    <a href="{% url 'del_todo' todo.id %}" id="{{ todo.id }}" data-id="{{ todo.id }}" token="{{ csrf_token }}"
+       class="del_todo">Удалить</a>
+    </div>
+{% endfor %}
+</body>
+<script>
+        $(".del_todo").click(function (e) {
+            e.preventDefault();
+            var val = confirm('Вы уверены');
+            if (val == true) {
+                var id = $(this).attr('id');
+                $.ajax({
+                    type: "POST",
+                    url: "/del_todo/" + id + "/",
+                    data: {
+                        'csrfmiddlewaretoken': $('.del_todo').attr('token'),
+                        id: id
+                    },
+                    success: function (response) {
+
+                            $('.del_todos').attr('id').remove();
+                        
+                    }
+                });
+                return false;
+            }
+        });
+</script>
+</html>
